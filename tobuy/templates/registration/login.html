@@ -1,0 +1,9 @@
+<h1>Login</h1>
+<form class="form-horizontal" method="post" action=".">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <input class='btn btn-block btn-primary' type="submit" value='Submit' />
+  <input type="hidden" name="next" value="{{ next }}" />
+</form>
+<p>Don't have an account yet? <a href="/accounts/signup/">Register here!</a></p>

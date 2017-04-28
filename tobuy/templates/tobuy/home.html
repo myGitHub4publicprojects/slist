@@ -1,0 +1,65 @@
+{% load static %}
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="{% static 'tobuy/js/jquery-3.1.1.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'tobuy/css/style.css' %}" />
+</head>
+
+<body>
+    {% for message in messages %}
+    <div class="message">
+        <p>{{ message }}</p>
+        <button>OK</button>
+    </div>
+    {% endfor %}
+<div class="row">
+    {% include 'tobuy/additem.html' %}
+    <button id='main_menu_toggle'>&#9776;</button>
+        <section class="col-sm-12 col-md-6">
+        <ul id="main_menu" class="hidden">
+        <li><a href='{% url "tobuy:logout" %}'>Logout</a></li>
+        <h3>Select list:</h3>
+        {% for list in user_lists %}
+            <li id='list{{ list.id }}'>
+                <a href="{% url 'tobuy:change_active_list' list.id %}">{{ list.name }}</a>
+                {% if list == active_list %}<span class="checker">&#10004;</span>
+            </li>
+                <li id="share_list">
+                    <a href="{% url 'tobuy:invite_user' %}">share this list</a>
+                </li>
+            {% else %}
+            </li>
+            {% endif %}
+        {% endfor %}
+        <li><a href='{% url "tobuy:add_new_list" %}'>Add new list</a></li>
+        </ul>
+        </section>
+
+</div>
+<div class="row">
+    <section class="col-sm-12 col-md-6">
+    
+    <h3>To buy:</h3>
+    {% csrf_token %}
+    <ul id="only_active">
+    {% for item in active %}
+        <li id='{{ item.id }}' class="active">{{ item.name }}</li>
+    {% endfor %}
+    </ul>
+    </section>
+
+    <section class="col-sm-12 col-md-6">
+    <h3>Recently bought:</h3>
+    <ul id='recently_bought'>
+    {% for item in inactive %}
+        <li id='{{ item.id }}' class="inactive">{{ item.name }}</li>
+    {% endfor %}
+    </ul>
+    </section>
+
+
+</div>
+<script src="{% static 'tobuy/js/myjs.js' %}"></script>
+</body>
+</html>

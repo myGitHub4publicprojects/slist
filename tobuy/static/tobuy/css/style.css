@@ -1,0 +1,79 @@
+body {
+    margin-top: 1%;
+}
+.row {
+    width: 95%;
+    margin: 0 auto;
+}
+
+#main_menu_toggle {
+    font-size: 4em;
+    margin-bottom: 0.5em;
+}
+
+
+.checker {
+    color: green;
+}
+
+ul#recently_bought, ul#only_active, ul#main_menu {
+    list-style-type: none;
+    -webkit-padding-start: 0;
+    padding: 0;
+}
+
+li.active, li.inactive, #main_menu>li {
+    background-color: #ece5e5;
+    padding: 1% 5%;
+    border: solid 1px black;
+    margin: 1px auto;
+    cursor:pointer;
+    font-size: 7em;
+}
+
+#new_user_form {
+    /*display: inline-block;*/
+    float: left;
+    width: 90%;
+}
+
+#new_user_form input {
+    font-size: 4em;
+}
+
+#id_name {
+    width: 90%;
+}
+
+.hidden {
+    display: none;
+}
+
+.list_items {
+    list-style-type: none;
+    padding: 1% 5%;
+    border: solid 1px black;
+    margin: 1px auto;
+    cursor:pointer;
+    font-size: 3em;
+}
+
+li#share_list {
+    background-color:#b5adad;
+    padding: 0.5% 2%;
+    font-size: 5em;
+    text-align: center;
+}
+
+.message {
+    font-size: 7em;
+    color: green;
+    padding: 5%;
+    text-align: center;
+    background-color: #ecc1c1;
+}
+
+.message button {
+    color: black;
+    padding: 1% 3%;
+}
