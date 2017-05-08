@@ -1,0 +1,64 @@
+<script>
+var socket = new WebSocket('ws://' + window.location.host + '/' + {{ active_list.id }});
+
+socket.onopen = function open() {
+    console.log('WebSockets connection created.');
+};
+
+socket.onmessage = function message(event) {
+    // if sender == me -> do nothing
+    var data = JSON.parse(event.data);
+    console.log(data);
+    console.log(data['sender_id']);
+    console.log(data);
+    if (data['sender_id'] !== {{ user.id }}) {
+        var elem = $("#" + data['item_id']);
+        elem.css('background-color', 'yellow').delay(500).hide(500).show(500);
+        // // remove element from active list and add element to inactive list:
+        if (elem.hasClass('active')) {
+            elem.removeClass( "active" ).addClass( "inactive" );
+            setTimeout(function() {
+                $("#recently_bought").append(elem);
+                elem.removeAttr("style");
+            }, 1000);
+        }
+        else if (elem.hasClass('inactive')) {
+            elem.removeClass( "inactive" ).addClass( "active" );
+            setTimeout(function() {
+                $("#only_active").append(elem);
+                elem.removeAttr("style");
+            }, 1000);
+        }
+    }
+};
+
+function active_inactive_switch() {
+    // send message:
+    socket.send(this.id);
+    // hide element:
+    var elem = $(this)
+    elem.css('background-color', 'yellow').delay(500).hide(500).show(500);
+    // // remove element from active list and add element to inactive list:
+    if (elem.hasClass('active')) {
+        elem.removeClass( "active" ).addClass( "inactive" );
+        setTimeout(function() {
+            $("#recently_bought").append(elem);
+            elem.removeAttr("style");
+        }, 1000);
+    }
+    else if (elem.hasClass('inactive')) {
+        elem.removeClass( "inactive" ).addClass( "active" );
+        setTimeout(function() {
+            $("#only_active").append(elem);
+            elem.removeAttr("style");
+        }, 1000);
+    }
+}
+
+function show_menu() {$('#main_menu').toggleClass('hidden');}
+
+$(document).on('click', '.active',  active_inactive_switch);
+$(document).on('click', '.inactive',  active_inactive_switch);
+$(document).on('click', '#main_menu_toggle',  show_menu);
+$('.message button').click(function() {$('.message').hide()});
+</script

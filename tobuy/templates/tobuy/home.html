@@ -57,9 +57,11 @@
     {% endfor %}
     </ul>
     </section>
-
+{{ user.id }}
 
 </div>
-<script src="{% static 'tobuy/js/myjs.js' %}"></script>
+
+{% include 'tobuy/myjs.html' %}
+
 </body>
 </html>

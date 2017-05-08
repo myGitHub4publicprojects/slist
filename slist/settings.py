@@ -7,7 +7,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -35,9 +35,21 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 
+    'channels',
+
     # custom
     'tobuy',
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        },
+        'ROUTING': 'slist.routing.channel_routing',
+    }
+}
 
 SITE_ID = 1
 
