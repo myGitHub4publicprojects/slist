@@ -31,13 +31,13 @@ li.active, li.inactive, #main_menu>li {
     font-size: 7em;
 }
 
-#new_user_form {
+#new_item_form {
     /*display: inline-block;*/
     float: left;
     width: 90%;
 }
 
-#new_user_form input {
+#new_item_form input {
     font-size: 4em;
 }
 

@@ -19,11 +19,11 @@ def home(request):
     active_list = user.profile.active_list
 
     form = ItemForm(request.POST or None)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.items_list = active_list
-        instance.save()
-        return redirect('tobuy:home')
+    # if form.is_valid():
+    #     instance = form.save(commit=False)
+    #     instance.items_list = active_list
+    #     instance.save()
+    #     return redirect('tobuy:home')
 
     active = Item.objects.filter(active=True, items_list=active_list)
     inactive = Item.objects.filter(active=False, items_list=active_list)
@@ -82,17 +82,18 @@ def change_active_list(request, pk):
     return redirect('tobuy:home')
 
 def add_new_list(request):
-    form = ListForm(request.POST or None)
-    if form.is_valid():
-        user = request.user
-        instance = form.save()
-        instance.users.add(user)
-        instance.save()
+    pass
+    # form = ListForm(request.POST or None)
+    # if form.is_valid():
+    #     user = request.user
+    #     instance = form.save()
+    #     instance.users.add(user)
+    #     instance.save()
        
-        user.profile.active_list = instance
-        user.profile.save()
-        return redirect('tobuy:home')
-    return render(request, 'tobuy/add_new_list.html', {'form': form})
+    #     user.profile.active_list = instance
+    #     user.profile.save()
+    #     return redirect('tobuy:home')
+    # return render(request, 'tobuy/add_new_list.html', {'form': form})
 
 def invite_user(request):
     invite_form = InviteForm(request.POST or None)

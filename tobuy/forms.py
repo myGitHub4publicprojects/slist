@@ -8,7 +8,7 @@ class ItemForm(forms.ModelForm):
         fields = ['name']
 
 class ListForm(forms.ModelForm):
-    name = forms.CharField(max_length=120)
+    list_name = forms.CharField(max_length=120, label='')
     class Meta:
         model = List
         fields = ['name']
