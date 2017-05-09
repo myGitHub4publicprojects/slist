@@ -1,14 +1,8 @@
 from django import forms
-from .models import Item, List
-
-class ItemForm(forms.ModelForm):
-    name = forms.CharField(max_length=120, label='')
-    class Meta:
-        model = Item
-        fields = ['name']
+from .models import List
 
 class ListForm(forms.ModelForm):
-    list_name = forms.CharField(max_length=120, label='')
+    name = forms.CharField(max_length=120, label='New list name')
     class Meta:
         model = List
         fields = ['name']

@@ -1,17 +1,11 @@
 <script>
 var socket = new WebSocket('ws://' + window.location.host + '/' + {{ active_list.id }});
 
-socket.onopen = function open() {
-    console.log('WebSockets connection created.');
-};
-
 socket.onmessage = function message(event) {
     // if sender == me -> do nothing
     var data = JSON.parse(event.data);
-    console.log(data);
-    console.log(data['sender_id']);
-    console.log(data);
-    if (data['sender_id'] !== {{ user.id }}) {
+
+    if (data['sender_id'] !== {{ user.id }} && !(data['new_li'])) {
         var elem = $("#" + data['item_id']);
         elem.css('background-color', 'yellow').delay(500).hide(500).show(500);
         // // remove element from active list and add element to inactive list:
@@ -30,15 +24,31 @@ socket.onmessage = function message(event) {
             }, 1000);
         }
     }
+
+    if (data['new_li']) {
+        // var new_li_text = data['new_li'];
+        var newListItem = $('<li/>', {
+            html: data['new_li'],
+            "class": 'active',
+            "id": data['new_item_id']
+        });
+
+        $("#only_active").append(newListItem);
+        
+    }
 };
 
 function active_inactive_switch() {
-    // send message:
-    socket.send(this.id);
+    // send message:  
+    socket.send(JSON.stringify({
+        "item_id": this.id,
+        "action": "switch"
+    }));
+
     // hide element:
     var elem = $(this)
     elem.css('background-color', 'yellow').delay(500).hide(500).show(500);
-    // // remove element from active list and add element to inactive list:
+    // remove element from active list and add element to inactive list:
     if (elem.hasClass('active')) {
         elem.removeClass( "active" ).addClass( "inactive" );
         setTimeout(function() {
@@ -55,17 +65,48 @@ function active_inactive_switch() {
     }
 }
 
+function submit_item() {
+    var item_name = $('#id_name').val();
+    // send new item name in a message
+    socket.send(JSON.stringify({
+        'item_name': item_name,
+        "action": "additem"
+    }));
+    // clear input fild
+    $('#id_name').val('');
+}
+
 function show_menu() {$('#main_menu').toggleClass('hidden');}
 
 $(document).on('click', '.active',  active_inactive_switch);
 $(document).on('click', '.inactive',  active_inactive_switch);
 $(document).on('click', '#main_menu_toggle',  show_menu);
 $('.message button').click(function() {$('.message').hide()});
+$(document).on('click', '#item_submit',  submit_item);
 
-$('#new_item_form').on('submit', function() { 
-    console.log('ala');
-})
+// add this to rently bought items and on long press display an option to remove item
+// (function() { 
 
-// $('#id_item_name').val();
+//     // how many milliseconds is a long press?
+//     var longpress = 3000;
+//     // holds the start time
+//     var start;
 
-</script
+//     jQuery( "#sss" ).on( 'mousedown', function( e ) {
+//         start = new Date().getTime();
+//     } );
+
+//     jQuery( "#sss" ).on( 'mouseleave', function( e ) {
+//         start = 0;
+//     } );
+
+//     jQuery( "#sss" ).on( 'mouseup', function( e ) {
+//         if ( new Date().getTime() >= ( start + longpress )  ) {
+//            alert('long press!');   
+//         } else {
+//            alert('short press!');   
+//         }
+//     } );
+
+// }());
+</script>

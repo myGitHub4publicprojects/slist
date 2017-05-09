@@ -11,7 +11,6 @@ body {
     margin-bottom: 0.5em;
 }
 
-
 .checker {
     color: green;
 }
@@ -34,7 +33,7 @@ li.active, li.inactive, #main_menu>li {
 #new_item_form {
     /*display: inline-block;*/
     float: left;
-    width: 90%;
+    width: 80%;
 }
 
 #new_item_form input {
@@ -42,7 +41,14 @@ li.active, li.inactive, #main_menu>li {
 }
 
 #id_name {
-    width: 90%;
+    width: 100%;
+}
+
+#item_submit {
+    font-size: 2.5em;
+    padding: 0.5em;
+    vertical-align: top;
+    margin-left: 0.1em;
 }
 
 .hidden {

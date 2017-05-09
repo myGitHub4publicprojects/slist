@@ -14,7 +14,10 @@
     </div>
     {% endfor %}
 <div class="row">
-    {% include 'tobuy/additem.html' %}
+    <form id='new_item_form' method="POST" action="">
+        <input id='id_name' name="name" type="text" required />
+    </form>
+<button id='item_submit'>+</button>
     <button id='main_menu_toggle'>&#9776;</button>
         <section class="col-sm-12 col-md-6">
         <ul id="main_menu" class="hidden">
@@ -57,7 +60,6 @@
     {% endfor %}
     </ul>
     </section>
-{{ user.id }}
 
 </div>
 
