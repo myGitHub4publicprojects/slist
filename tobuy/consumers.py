@@ -26,6 +26,10 @@ def ws_receive(message):
         # create new html li element to be inserted into list
         mydict['new_li'] = item.name
         mydict['new_item_id'] = item.id
+    if msg_content.get('action') == "delete":
+        item_id = msg_content.get('item_id')
+        item = Item.objects.get(pk=item_id)
+        item.delete()
     Group('users').send({
         'text': json.dumps(mydict)
     })

@@ -28,6 +28,7 @@ li.active, li.inactive, #main_menu>li {
     margin: 1px auto;
     cursor:pointer;
     font-size: 7em;
+    position:relative;
 }
 
 #new_item_form {
@@ -82,4 +83,17 @@ li#share_list {
 .message button {
     color: black;
     padding: 1% 3%;
+}
+
+.delete {
+    font-size: 0.7em;
+    font-weight: bolder;
+    color: red;
+    border: solid 1px black;
+    padding: 0.2em;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    top: 0.1em;
+    right: 0.1em;
 }

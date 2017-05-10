@@ -27,8 +27,13 @@ socket.onmessage = function message(event) {
 
     if (data['new_li']) {
         // var new_li_text = data['new_li'];
-        var newListItem = $('<li/>', {
+        var newSpanItem = $('<span/>', {
             html: data['new_li'],
+            "class": 'item_name',
+        });
+
+        var newListItem = $('<li/>', {
+            html: newSpanItem,
             "class": 'active',
             "id": data['new_item_id']
         });
@@ -39,14 +44,14 @@ socket.onmessage = function message(event) {
 };
 
 function active_inactive_switch() {
+    var elem = $(this).parent()
     // send message:  
     socket.send(JSON.stringify({
-        "item_id": this.id,
+        "item_id": elem.attr('id'),
         "action": "switch"
     }));
 
     // hide element:
-    var elem = $(this)
     elem.css('background-color', 'yellow').delay(500).hide(500).show(500);
     // remove element from active list and add element to inactive list:
     if (elem.hasClass('active')) {
@@ -54,10 +59,12 @@ function active_inactive_switch() {
         setTimeout(function() {
             $("#recently_bought").append(elem);
             elem.removeAttr("style");
+            elem.append("<span class='delete'>X</span>");
         }, 1000);
     }
     else if (elem.hasClass('inactive')) {
         elem.removeClass( "inactive" ).addClass( "active" );
+        elem.children( '.delete' ).remove();
         setTimeout(function() {
             $("#only_active").append(elem);
             elem.removeAttr("style");
@@ -76,37 +83,22 @@ function submit_item() {
     $('#id_name').val('');
 }
 
+function delete_item() {
+    var elem = $(this).parent();
+    // send message:  
+    socket.send(JSON.stringify({
+        "item_id": elem.attr('id'),
+        "action": "delete"
+    }));
+    elem.css('background-color', 'red').delay(500).hide(500)
+}
+
 function show_menu() {$('#main_menu').toggleClass('hidden');}
 
-$(document).on('click', '.active',  active_inactive_switch);
-$(document).on('click', '.inactive',  active_inactive_switch);
+$(document).on('click', '.item_name',  active_inactive_switch);
+$(document).on('click', '.delete',  delete_item);
 $(document).on('click', '#main_menu_toggle',  show_menu);
 $('.message button').click(function() {$('.message').hide()});
 $(document).on('click', '#item_submit',  submit_item);
 
-// add this to rently bought items and on long press display an option to remove item
-// (function() { 
-
-//     // how many milliseconds is a long press?
-//     var longpress = 3000;
-//     // holds the start time
-//     var start;
-
-//     jQuery( "#sss" ).on( 'mousedown', function( e ) {
-//         start = new Date().getTime();
-//     } );
-
-//     jQuery( "#sss" ).on( 'mouseleave', function( e ) {
-//         start = 0;
-//     } );
-
-//     jQuery( "#sss" ).on( 'mouseup', function( e ) {
-//         if ( new Date().getTime() >= ( start + longpress )  ) {
-//            alert('long press!');   
-//         } else {
-//            alert('short press!');   
-//         }
-//     } );
-
-// }());
 </script>
