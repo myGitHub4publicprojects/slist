@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'tobuy',
 ]
 
+# this redis settings works on local
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'asgi_redis.RedisChannelLayer',
