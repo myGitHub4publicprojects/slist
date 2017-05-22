@@ -32,7 +32,6 @@ li.active, li.inactive, #main_menu>li {
 }
 
 #new_item_form {
-    /*display: inline-block;*/
     float: left;
     width: 80%;
 }
