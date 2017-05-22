@@ -41,15 +41,16 @@ INSTALLED_APPS = [
     'tobuy',
 ]
 
-# this redis settings works on local
+# redis settings for heroku
+
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'asgi_redis.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [('localhost', 6379)],
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
         },
-        'ROUTING': 'slist.routing.channel_routing',
-    }
+        "ROUTING": "slist.routing.channel_routing",
+    },
 }
 
 SITE_ID = 1
