@@ -7,13 +7,6 @@ from .models import Item
 # Connected to websocket.connect
 @channel_session_user_from_http
 def ws_add(message):
-    
-    import sys
-
-    print 'dotarlem do consumers ws_add'
-    sys.stdout.flush()
-
-
     # Accept the connection
     message.reply_channel.send({"accept": True})
     # Add to the users group

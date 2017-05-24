@@ -14,13 +14,6 @@ from .models import Item, List, Invites
 def home(request):
     if not request.user.is_authenticated:
         return redirect(reverse('tobuy:login'))
-
-    import sys
-    print 'dotarlem do views'
-    sys.stdout.flush()
-
-
-
     user = request.user
     user_lists = List.objects.filter(users=user)
     active_list = user.profile.active_list
