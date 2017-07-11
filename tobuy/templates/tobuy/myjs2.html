@@ -2,13 +2,13 @@
 var socket = new WebSocket('ws://' + window.location.host + '/' + {{ active_list.id }});
 console.log(socket);
 socket.onmessage = function message(event) {
+    // if sender == me -> do nothing
     var data = JSON.parse(event.data);
     console.log(data['sender_id']);
-    if (data['action'] == 'switch_status') {
-        // move item between active and inactive list
+    if (data['sender_id'] !== {{ user.id }} && !(data['new_li'])) {
         var elem = $("#" + data['item_id']);
         elem.css('background-color', 'yellow').delay(500).hide(500).show(500);
-        // remove element from active list and add element to inactive list:
+        // // remove element from active list and add element to inactive list:
         if (elem.hasClass('active')) {
             elem.removeClass( "active" ).addClass( "inactive" );
             setTimeout(function() {
@@ -27,8 +27,8 @@ socket.onmessage = function message(event) {
         }
     }
 
-    if (data['action'] == 'add_new_item') {
-        // create new list item and add it to active list
+    if (data['new_li']) {
+        // var new_li_text = data['new_li'];
         var newSpanItem = $('<span/>', {
             html: data['new_li'],
             "class": 'item_name',
@@ -43,30 +43,40 @@ socket.onmessage = function message(event) {
         $("#only_active").append(newListItem);
         
     }
-
-    if (data['action'] == 'delete_item') {
-        var elem = $("#" + data['item_id']);
-        elem.css('background-color', 'red').delay(500).hide(500);
-        setTimeout(function() {
-            elem.remove();
-        }, 1000);
-        
-    }
 };
 
 function active_inactive_switch() {
-    // send info to the sever which item is to be moved from active to inactive list or revese
     var elem = $(this).parent()
-    console.log('switch activated');
+    // send message:  
     socket.send(JSON.stringify({
         "item_id": elem.attr('id'),
         "action": "switch"
     }));
+
+    // hide element:
+    elem.css('background-color', 'yellow').delay(500).hide(500).show(500);
+    // remove element from active list and add element to inactive list:
+    if (elem.hasClass('active')) {
+        elem.removeClass( "active" ).addClass( "inactive" );
+        setTimeout(function() {
+            $("#recently_bought").append(elem);
+            elem.removeAttr("style");
+            elem.append("<span class='delete'>X</span>");
+        }, 1000);
+    }
+    else if (elem.hasClass('inactive')) {
+        elem.removeClass( "inactive" ).addClass( "active" );
+        elem.children( '.delete' ).remove();
+        setTimeout(function() {
+            $("#only_active").append(elem);
+            elem.removeAttr("style");
+        }, 1000);
+    }
 }
 
 function submit_item() {
-    // send info about item name to be created and strored in database
     var item_name = $('#id_name').val();
+    // send new item name in a message
     socket.send(JSON.stringify({
         'item_name': item_name,
         "action": "additem"
@@ -76,11 +86,13 @@ function submit_item() {
 }
 
 function delete_item() {
-    var elem = $(this).parent(); 
+    var elem = $(this).parent();
+    // send message:  
     socket.send(JSON.stringify({
         "item_id": elem.attr('id'),
         "action": "delete"
     }));
+    elem.css('background-color', 'red').delay(500).hide(500)
 }
 
 function show_menu() {$('#main_menu').toggleClass('hidden');}
