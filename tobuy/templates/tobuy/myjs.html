@@ -1,5 +1,5 @@
 <script>
-var socket = new WebSocket('ws://' + window.location.host + '/' + {{ active_list.id }});
+var socket = new WebSocket('wss://' + window.location.host + '/' + {{ active_list.id }});
 console.log(socket);
 socket.onmessage = function message(event) {
     var data = JSON.parse(event.data);
